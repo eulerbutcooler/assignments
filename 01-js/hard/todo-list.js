@@ -10,70 +10,53 @@
   Once you've implemented the logic, test your code by running
 */
 
-// class Todo {
-
-//   constructor(todolist){
-//     this.todolist=todolist;
-//   }
-
-//   add(task){
-//     this.todolist.push(task);
-//   }
-
-//   remove(i){
-//     this.todolist.splice(i,1);
-//   }
-
-//   update(i, task){
-//     this.todolist(i)==task;
-//   }
-
-//   getAll(){
-//     console.log(this.todolist);
-//   }
-
-//   get(i){
-//     console.log(this.todolist(i));
-//   }
-
-//   clear(){
-//     this.todolist.length=0;
-//     console.log(this.todolist);
-//   }
-// }
-
-
 class Todo {
 
-  constructor(todolist) {
-    this.todolist = todolist;
+  constructor(todolist){
+    this.todolist=[];
   }
 
-  add(task) {
+  add(task){
     this.todolist.push(task);
   }
 
-  remove(i) {
-    this.todolist.splice(i, 1);
+  remove(i){
+    if(i<this.todolist.length){
+    this.todolist.splice(i,1);
+  }
+    else{
+      return;
+    }
   }
 
-  update(i, updatedTodo) {
-    this.todolist.splice(i, 1, updatedTodo);
-    return updatedTodo; // Return the updated todo
+  update(i, updatedtask){
+    if(i<this.todolist.length){
+    this.todolist.splice(i, 1, updatedtask);
+    return updatedtask;
+    }
+    else{
+      return;
+    }
   }
 
-  getAll() {
-    return this.todolist; // Return the entire todo list
+  getAll(){
+    return this.todolist;
   }
 
-  get(i) {
-    return this.todolist[i]; // Return the todo at index i
+  get(i){
+    if(i<this.todolist.length){
+      return this.todolist[i]
+    }
+    else{
+      return null;
+    }
   }
 
-  clear() {
-    this.todolist.length = 0;
-    return this.todolist; // Return the empty todo list
+  clear(){
+    this.todolist.length=0;
+    return this.todolist;
   }
 }
+
 
 module.exports = Todo;
