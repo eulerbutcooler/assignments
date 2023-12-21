@@ -9,7 +9,6 @@ function sleep(milliseconds) {
     return new Promise(function(resolve){
         let start = Date.now();
         while (Date.now() < start + milliseconds) {
-            // do nothing
         }
         resolve();
     });
