@@ -1,9 +1,10 @@
 const { Router } = require("express");
 const adminMiddleware = require("../middleware/admin");
-const { Admin, User, Course } = require("../db");
-const {JWT_SECRET} = require("../config");
+const { Admin, Course } = require("../db");
+const {JWT_SECRET} = require("../config/config");
 const router = Router();
 const jwt = require("jsonwebtoken");
+const zod = require("zod");
 
 // Admin Routes
 router.post('/signup', async (req, res) => {
@@ -46,15 +47,20 @@ router.post('/signin', async (req, res) => {
 
 
 router.post('/courses', adminMiddleware, async (req, res) => {
-    const title = req.body.title;
-    const description = req.body.description;
-    const imageLink = req.body.imageLink;
-    const price = req.body.price;
+    const courseSchema = zod.object({
+        title: zod.string(),
+        description: zod.string(),
+        imageLink: zod.string(),
+        price: zod.number()
+    })
+    
+    const course = courseSchema.parse(req.body);
+    
     const newCourse = await Course.create({
-        title,
-        description,
-        imageLink,
-        price
+        title: course.title,
+        description: course.description,
+        imageLink: course.imageLink,
+        price: course.price
     })
 
     res.json({

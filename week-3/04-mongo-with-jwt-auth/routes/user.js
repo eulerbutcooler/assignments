@@ -1,8 +1,8 @@
 const { Router } = require("express");
 const router = Router();
 const userMiddleware = require("../middleware/user");
-const { Admin, User, Course } = require("../db");
-const {JWT_SECRET} = require("../config");
+const { User, Course } = require("../db");
+const {JWT_SECRET} = require("../config/config");
 const jwt = require("jsonwebtoken");
 
 // User Routes
@@ -35,7 +35,7 @@ router.post('/signin', async (req, res) => {
         }, JWT_SECRET);
 
         res.json({
-            token
+            token: token
         })
     } else {
         res.status(411).json({

@@ -1,7 +1,9 @@
 const { Router } = require("express");
 const adminMiddleware = require("../middleware/admin");
 const { Admin } = require("../db");
+const { Course } = require("../db");
 const router = Router();
+const zod = require("zod");
 
 // Admin Routes
 router.post('/signup', async (req, res) => {
@@ -19,16 +21,21 @@ router.post('/signup', async (req, res) => {
 });
 
 router.post('/courses', adminMiddleware, async (req, res) => {
-    const title = req.body.title;
-    const description = req.body.description;
-    const imageLink = req.body.imageLink;
-    const price = req.body.price;
 
+    const courseSchema = zod.object({
+        title: zod.string(),
+        description: zod.string(),
+        imageLink: zod.string().url(),
+        price: zod.number()
+    })
+
+    const course = courseSchema.parse(req.body);
+   
     const newCourse = await Course.create({
-        title,
-        description,
-        imageLink,
-        price
+        course: course.title,
+        description: course.description,
+        imageLink: course.imageLink,
+        price: course.price
     })
 
     res.json({
