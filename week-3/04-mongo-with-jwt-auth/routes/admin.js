@@ -50,7 +50,7 @@ router.post('/courses', adminMiddleware, async (req, res) => {
     const courseSchema = zod.object({
         title: zod.string(),
         description: zod.string(),
-        imageLink: zod.string(),
+        imageLink: zod.string().url(),
         price: zod.number()
     })
     
