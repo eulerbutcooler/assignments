@@ -8,10 +8,22 @@
     let oldTodoState = [];
 
     function addTodoToDom() {
-      
+      const todos = document.getElementById("todos");
+      todos.innerHTML = "";
+      todoState.forEach((todo) => {
+        const todoDiv = document.createElement("div");
+        todoDiv.innerHTML = `
+          <h3>${todo.title}</h3>
+          <p>${todo.description}</p>
+          <button onclick="deleteTodoFromDom(${todo.id})">Delete</button>
+          <button onclick="updateTodoFromDom(${todo.id})">Update</button>
+        `;
+        todos.appendChild(todoDiv);
+      })
     }
 
     function removeTodoFromDom(todo) {
+      
       
     }
 
