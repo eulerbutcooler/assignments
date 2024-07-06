@@ -69,9 +69,16 @@ describe('Todo Operations', () => {
     test('getTodos retrieves all todos for a user', async () => {
       // Assuming there are already todos created in previous tests
       const todos = await getTodos(userId);
+      interface Todo {
+        id: number;
+        title: string;
+        description: string;
+        done: boolean;
+        user_id: number;
+      }
   
       expect(todos.length).toBeGreaterThan(0);
-      todos.forEach(todo => {
+      todos.forEach((todo:Todo) => {
         expect(todo).toHaveProperty('id');
         expect(todo.user_id).toEqual(userId);
       });
