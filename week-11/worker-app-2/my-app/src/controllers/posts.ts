@@ -1,12 +1,10 @@
 import { PrismaClient } from '@prisma/client/extension';
 import { withAccelerate } from '@prisma/extension-accelerate';
 import { Context } from 'hono';
-import { env } from 'hono/adapter';
 
 export async function getPosts(c: Context) {
-	const { DATABASE_URL } = env<{ DATABASE_URL: string }>(c);
 	const prisma = new PrismaClient({
-		datasourceUrl: DATABASE_URL,
+		datasourceUrl: c.env.DATABASE_URL,
 	}).$extends(withAccelerate());
 
 	try {
@@ -18,7 +16,7 @@ export async function getPosts(c: Context) {
 		});
 
 		return c.json({
-			post: response.map((res: any) => ({
+			post: response.map((res:any) => ({
 				id: res.id,
 				username: res.User.username,
 				title: res.title,
@@ -34,9 +32,8 @@ export async function getPosts(c: Context) {
 }
 
 export async function getUserPosts(c: Context) {
-	const { DATABASE_URL } = env<{ DATABASE_URL: string }>(c);
 	const prisma = new PrismaClient({
-		datasourceUrl: DATABASE_URL,
+		datasourceUrl: c.env.DATABASE_URL,
 	}).$extends(withAccelerate());
 
 	try {
@@ -55,9 +52,8 @@ export async function getUserPosts(c: Context) {
 }
 
 export async function createPost(c: Context) {
-	const { DATABASE_URL } = env<{ DATABASE_URL: string }>(c);
 	const prisma = new PrismaClient({
-		datasourceUrl: DATABASE_URL,
+		datasourceUrl: c.env.DATABASE_URL,
 	}).$extends(withAccelerate());
 
 	try {
@@ -95,7 +91,7 @@ export async function createPost(c: Context) {
 				id: res.id,
 				title: res.title,
 				postbody: res.postbody,
-				tags: res.tags.map((tag: any) => tag.tag),
+				tags: res.tags.map((tag:any) => tag.tag),
 				createdAt: res.createdAt,
 			},
 		});
@@ -106,10 +102,10 @@ export async function createPost(c: Context) {
 }
 
 export async function updatePost(c: Context) {
-	const { DATABASE_URL } = env<{ DATABASE_URL: string }>(c);
 	const prisma = new PrismaClient({
-		datasourceUrl: DATABASE_URL,
+		datasourceUrl: c.env.DATABASE_URL,
 	}).$extends(withAccelerate());
+
 	try {
 		const id: number = Number(c.req.param('id'));
 
@@ -167,9 +163,8 @@ export async function updatePost(c: Context) {
 }
 
 export async function deletePost(c: Context) {
-	const { DATABASE_URL } = env<{ DATABASE_URL: string }>(c);
 	const prisma = new PrismaClient({
-		datasourceUrl: DATABASE_URL,
+		datasourceUrl: c.env.DATABASE_URL,
 	}).$extends(withAccelerate());
 
 	try {

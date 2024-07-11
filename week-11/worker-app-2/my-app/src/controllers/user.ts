@@ -1,15 +1,13 @@
-import { PrismaClient } from '@prisma/client/edge';
+import { PrismaClient } from '@prisma/client/extension';
 import { withAccelerate } from '@prisma/extension-accelerate';
 import { userSigninSchema, userSignupSchema } from '../zodschema/zodschemas';
 import { Jwt } from 'hono/utils/jwt';
 import { Context } from 'hono';
 import { compareSync, hashSync } from 'bcrypt-ts';
-import { env } from 'hono/adapter';
 
 export async function signup(c: Context) {
-	const { DATABASE_URL } = env<{ DATABASE_URL: string }>(c);
 	const prisma = new PrismaClient({
-		datasourceUrl: DATABASE_URL,
+		datasourceUrl: c.env.DATABASE_URL,
 	}).$extends(withAccelerate());
 
 	try {
@@ -47,7 +45,7 @@ export async function signup(c: Context) {
 			},
 		});
 
-		const token = await Jwt.sign({ userId: res.id }, c.env.JWT_SECRET_KEY);
+		const token = await Jwt.sign(res.id, c.env.JWT_SECRET_KEY);
 
 		return c.json({
 			msg: 'User Created',
@@ -65,9 +63,8 @@ export async function signup(c: Context) {
 }
 
 export async function signin(c: Context) {
-	const { DATABASE_URL } = env<{ DATABASE_URL: string }>(c);
 	const prisma = new PrismaClient({
-		datasourceUrl: DATABASE_URL,
+		datasourceUrl: c.env.DATABASE_URL,
 	}).$extends(withAccelerate());
 
 	try {
@@ -111,9 +108,8 @@ export async function signin(c: Context) {
 }
 
 export async function userprofile(c: Context) {
-	const { DATABASE_URL } = env<{ DATABASE_URL: string }>(c);
 	const prisma = new PrismaClient({
-		datasourceUrl: DATABASE_URL,
+		datasourceUrl: c.env.DATABASE_URL,
 	}).$extends(withAccelerate());
 
 	try {
@@ -141,9 +137,8 @@ export async function userprofile(c: Context) {
 }
 
 export async function allusers(c: Context) {
-	const { DATABASE_URL } = env<{ DATABASE_URL: string }>(c);
 	const prisma = new PrismaClient({
-		datasourceUrl: DATABASE_URL,
+		datasourceUrl: c.env.DATABASE_URL,
 	}).$extends(withAccelerate());
 
 	try {
